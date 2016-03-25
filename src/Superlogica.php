@@ -25,8 +25,10 @@ class Superlogica
 	 */
 	public function __construct($options = array())
 	{
-		$this->_authHeader['app_token'] = sprintf('app_token: %s', $options['app_token']);
-		$this->_authHeader['access_token'] = sprintf('access_token: %s', $options['access_token']);
+		$this->_authHeader = array(
+			sprintf('app_token: %s', $options['app_token']),
+			sprintf('access_token: %s', $options['access_token']),
+		);
 	}
 
 	public function request($service, array $params = array(), $method = 'POST')
