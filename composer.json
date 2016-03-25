@@ -1,0 +1,27 @@
+{
+	"name": "armenio/armenio-superlogica",
+	"description": "Superlogica library",
+	"type": "library",
+	"keywords": [
+		"superlogica",
+		"helper",
+		"zf2",
+		"armenio"
+	],
+	"homepage": "https://github.com/armenio/armenio-superlogica",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Rafael Armênio",
+			"email": "rafael.armenio@gmail.com"
+		}
+	],
+	"require": {
+		"zendframework/zendframework": "2.*"
+	},
+	"autoload": {
+		"psr-4": {
+			"Armenio\\Superlogica\\": "src/"
+		}
+	}
+}
