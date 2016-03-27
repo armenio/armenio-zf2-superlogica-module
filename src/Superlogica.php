@@ -1,8 +1,6 @@
 <?php
 namespace Armenio\Superlogica;
 
-use Aircode\Helper\Inflector as HelperInflector;
-
 use Zend\Http\Client;
 use Zend\Http\Client\Adapter\Curl;
 use Zend\Json\Json;
