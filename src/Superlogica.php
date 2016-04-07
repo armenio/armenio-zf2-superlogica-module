@@ -34,8 +34,8 @@ class Superlogica
 		$result = false;
 
 		try{
-			$uri = sprintf('https://api.superlogica.net/v2/financeiro%s', $service);
-			$client = new Client($uri);
+			$url = sprintf('https://api.superlogica.net/v2/financeiro%s', $service);
+			$client = new Client($url);
 			$client->setAdapter(new Curl());
 			$client->setMethod($method);
 			$client->setOptions(array(
