@@ -200,6 +200,20 @@ class Superlogica
 
 	public function salvarAssinaturas(array $dadosAssinaturas)
 	{
+		if( ! empty($dadosAssinaturas['id_externo']) ){
+		
+			$params = array(
+				'PLANOS' => array(
+					array(
+						'ID_PLANOCLIENTE_PLC' => $dadosAssinaturas['id_externo'],
+						'DT_CANCELAMENTO_PLC' => date('m/d/Y', $dadosAssinaturas['data_hora']->getTimestamp()),
+					),
+				),
+			);
+
+			$response = $this->put('/assinaturas', $params);
+		}
+
 		$params = array(
 			'PLANOS' => array(
 				array(
