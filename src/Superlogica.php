@@ -176,6 +176,8 @@ class Superlogica
 					'VL_UNITARIO_PRD' => $dadosPlanos['preco'],
 				),
 			),
+			'FL_MULTIPLOSIDENTIFICADORES_PLA' => 1,
+			'FL_PERMITIRCANCELAMENTO_PLA' => 1,
 		);
 
 		if( ! empty($dadosPlanos['id_externo']) ){
@@ -203,12 +205,8 @@ class Superlogica
 		if( ! empty($dadosAssinaturas['id_externo']) ){
 		
 			$params = array(
-				'PLANOS' => array(
-					array(
-						'ID_PLANOCLIENTE_PLC' => $dadosAssinaturas['id_externo'],
-						'DT_CANCELAMENTO_PLC' => date('m/d/Y', $dadosAssinaturas['data_hora']->getTimestamp()),
-					),
-				),
+				'ID_PLANOCLIENTE_PLC' => $dadosAssinaturas['id_externo'],
+				'DT_CANCELAMENTO_PLC' => date('m/d/Y', $dadosAssinaturas['data_hora']->getTimestamp()),
 			);
 
 			$response = $this->put('/assinaturas', $params);
@@ -225,6 +223,10 @@ class Superlogica
 		);
 
 		$response = $this->post('/assinaturas', $params);
+
+		if( ! empty($response[0]['data']['id_planocliente_plc']) ){
+			return $response[0]['data']['id_planocliente_plc'];
+		}
 
 		return $response;
 	}
