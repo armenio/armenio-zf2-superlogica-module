@@ -1,5 +1,14 @@
 <?php
+/**
+ * Rafael Armenio <rafael.armenio@gmail.com>
+ *
+ * @link http://github.com/armenio for the source repository
+ */
+ 
 namespace Armenio\Superlogica;
+
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 use Zend\Http\Client;
 use Zend\Http\Client\Adapter\Curl;
@@ -11,22 +20,45 @@ use Zend\Json\Json;
  * @author Rafael Armenio <rafael.armenio@gmail.com>
  * @version 1.0
  */
-class Superlogica
+class Superlogica implements ServiceLocatorAwareInterface
 {
-	protected $_authHeader = array();
+    protected $serviceLocator;
+
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+	protected $authHeader = array();
 
 	/**
 	 * Constructor
 	 * 
 	 * @param array $options
-	 * @return __construct
+	 * @return setAuthHeader
 	 */
-	public function __construct($options = array())
+	public function setAuthHeader($options = array())
 	{
-		$this->_authHeader = array(
+		$this->authHeader = array(
 			sprintf('app_token: %s', $options['app_token']),
 			sprintf('access_token: %s', $options['access_token']),
 		);
+
+		return $this;
+	}
+
+	public function getAuthHeader($option = null)
+	{
+		if( $option !== null ){
+			return $this->authHeader[$option];
+		}
+
+		return $this->authHeader;
 	}
 
 	public function request($service, array $params = array(), $method = 'POST')
@@ -46,7 +78,7 @@ class Superlogica
 				),
 			));
 
-			$client->setHeaders($this->_authHeader);
+			$client->setHeaders($this->authHeader);
 			
 			if( ! empty($params) ){
 				if( $method == 'GET' ){

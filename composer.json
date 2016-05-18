@@ -20,8 +20,11 @@
 		"zendframework/zendframework": "2.*"
 	},
 	"autoload": {
-		"psr-4": {
-			"Armenio\\Superlogica\\": "src/"
-		}
+		"psr-0": {
+			"Armenio\\Superlogica\\": "src"
+		},
+		"classmap": [
+			"Module.php"
+		]
 	}
 }
