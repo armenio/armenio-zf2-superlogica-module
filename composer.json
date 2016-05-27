@@ -1,5 +1,5 @@
 {
-	"name": "armenio/armenio-superlogica",
+	"name": "armenio/armenio-zf2-superlogica-module",
 	"description": "Superlogica library",
 	"type": "library",
 	"keywords": [
@@ -8,7 +8,7 @@
 		"zf2",
 		"armenio"
 	],
-	"homepage": "https://github.com/armenio/armenio-superlogica",
+	"homepage": "https://github.com/armenio/armenio-zf2-superlogica-module",
 	"license": "MIT",
 	"authors": [
 		{
