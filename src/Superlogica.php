@@ -7,12 +7,9 @@
  
 namespace Armenio\Superlogica;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
 use Zend\Http\Client;
 use Zend\Http\Client\Adapter\Curl;
-use Zend\Json\Json;
+use Zend\Json;
 
 /**
  * Superlogica
@@ -20,21 +17,9 @@ use Zend\Json\Json;
  * @author Rafael Armenio <rafael.armenio@gmail.com>
  * @version 1.0
  */
-class Superlogica implements ServiceLocatorAwareInterface
+class Superlogica
 {
-    protected $serviceLocator;
-
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
-
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
-	protected $authHeader = array();
+    protected $authHeader = array();
 
 	/**
 	 * Constructor
@@ -92,7 +77,7 @@ class Superlogica implements ServiceLocatorAwareInterface
 
 			if ($response->isSuccess()) {
 				$body = $response->getContent();
-				$json = Json::decode($body, 1);
+				$json = Json\Json::decode($body, 1);
 				
 				if( ! empty($json[0]['status']) ){
 					if( $json[0]['status'] == '200' ){
@@ -108,13 +93,13 @@ class Superlogica implements ServiceLocatorAwareInterface
             $isException = true;
         } catch (\Zend\Http\Client\Adapter\Exception\RuntimeException $e){
         	$isException = true;
-        } catch (\Zend\Json\Exception\RuntimeException $e) {
+        } catch (Json\Exception\RuntimeException $e) {
 			$isException = true;
-		} catch (\Zend\Json\Exception\RecursionException $e2) {
+		} catch (Json\Exception\RecursionException $e2) {
 			$isException = true;
-		} catch (\Zend\Json\Exception\InvalidArgumentException $e3) {
+		} catch (Json\Exception\InvalidArgumentException $e3) {
 			$isException = true;
-		} catch (\Zend\Json\Exception\BadMethodCallException $e4) {
+		} catch (Json\Exception\BadMethodCallException $e4) {
 			$isException = true;
 		}
 
