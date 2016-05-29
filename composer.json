@@ -1,6 +1,6 @@
 {
 	"name": "armenio/armenio-zf2-superlogica-module",
-	"description": "Superlogica library",
+	"description": "Superlogica Module for Zend Framework 2",
 	"type": "library",
 	"keywords": [
 		"superlogica",
