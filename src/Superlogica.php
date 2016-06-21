@@ -19,7 +19,7 @@ use Zend\Json;
  */
 class Superlogica
 {
-    protected $authHeader = array();
+    protected $authHeader = [];
 
 	/**
 	 * Constructor
@@ -27,12 +27,12 @@ class Superlogica
 	 * @param array $options
 	 * @return setAuthHeader
 	 */
-	public function setAuthHeader($options = array())
+	public function setAuthHeader($options = [])
 	{
-		$this->authHeader = array(
+		$this->authHeader = [
 			sprintf('app_token: %s', $options['app_token']),
 			sprintf('access_token: %s', $options['access_token']),
-		);
+		];
 
 		return $this;
 	}
@@ -46,7 +46,7 @@ class Superlogica
 		return $this->authHeader;
 	}
 
-	public function request($service, array $params = array(), $method = 'POST')
+	public function request($service, array $params = [], $method = 'POST')
 	{
 		$result = false;
 
@@ -55,13 +55,13 @@ class Superlogica
 			$client = new Client($url);
 			$client->setAdapter(new Curl());
 			$client->setMethod($method);
-			$client->setOptions(array(
-				'curloptions' => array(
+			$client->setOptions([
+				'curloptions' => [
 					CURLOPT_HEADER => false,
 					CURLOPT_SSL_VERIFYPEER => false,
 					CURLOPT_SSL_VERIFYHOST => false, 
-				),
-			));
+				],
+			]);
 
 			$client->setHeaders($this->authHeader);
 			
@@ -110,17 +110,17 @@ class Superlogica
 		return $result;
 	}
 
-	public function post($service, array $params = array())
+	public function post($service, array $params = [])
 	{
 		return $this->request($service, $params, 'POST');
 	}
 
-	public function put($service, array $params = array())
+	public function put($service, array $params = [])
 	{
 		return $this->request($service, $params, 'PUT');
 	}
 
-	public function get($service, array $params = array())
+	public function get($service, array $params = [])
 	{
 		return $this->request($service, $params, 'GET');
 	}
@@ -129,7 +129,7 @@ class Superlogica
 	{
 		$dadosAssinante['cnpj'] = mb_substr($dadosAssinante['cnpj'], -18);
 
-		$params = array(
+		$params = [
 			'ST_NOME_SAC' => $dadosAssinante['titulo'],
 			'ST_NOMEREF_SAC' => $dadosAssinante['nome_fantasia'],
 			'ST_CGC_SAC' => $dadosAssinante['cnpj'],
@@ -139,7 +139,7 @@ class Superlogica
 			'ST_TELEFONE_SAC' => $dadosAssinante['telefone'],
 			'ST_FAX_SAC' => $dadosAssinante['celular'],
 			'ST_DIAVENCIMENTO_SAC' => $dadosAssinante['dia_vencimento'],
-		);
+		];
 
 		if( ! empty($dadosAssinante['id_externo']) ){
 			$params['ID_SACADO_SAC'] = $dadosAssinante['id_externo'];
@@ -158,7 +158,7 @@ class Superlogica
 
 	public function salvarAssinanteEnderecos(array $dadosAssinante)
 	{
-		return $this->put('/clientes', array(
+		return $this->put('/clientes', [
 			'ID_SACADO_SAC' => $dadosAssinante['id_externo'],
 
 			'ST_CEP_SAC' => $dadosAssinante['ComponentAssinanteEnderecos'][0]['cep'],
@@ -168,7 +168,7 @@ class Superlogica
 			'ST_COMPLEMENTO_SAC' => $dadosAssinante['ComponentAssinanteEnderecos'][0]['complemento'],
 			'ST_CIDADE_SAC' => $dadosAssinante['ComponentAssinanteEnderecos'][0]['ComponentGeoCidades']['titulo'],
 			'ST_ESTADO_SAC' => $dadosAssinante['ComponentAssinanteEnderecos'][0]['ComponentGeoEstados']['uf'],
-		));
+		]);
 	}
 
 	public function dadosAssinante(array $dadosAssinante)
@@ -178,24 +178,24 @@ class Superlogica
 
 	public function salvarPlanos(array $dadosPlanos)
 	{
-		$params = array(
+		$params = [
 			'ST_NOME_PLA' => $dadosPlanos['titulo'],
 			'ID_GRADE_GPL' => 1,
 			'ST_DESCRICAO_PLA' => $dadosPlanos['descricao'],
 			'ID_CONTA_CB' => 1,
 			'FL_DESTAQUE_PLA' => $dadosPlanos['destaque'],
 			'FL_BOLETO_PLA' => $dadosPlanos['boleto'],
-			'COMPO_RECEBIMENTO' => array(
-				array(
+			'COMPO_RECEBIMENTO' => [
+				[
 					'ID_PRODUTO_PRD' => 999999982,
 					'ST_COMPLEMENTO_COMP' => 0,
 					'NM_QUANTIDADE_COMP' => 1,
 					'VL_UNITARIO_PRD' => $dadosPlanos['preco'],
-				),
-			),
+				],
+			],
 			'FL_MULTIPLOSIDENTIFICADORES_PLA' => 1,
 			'FL_PERMITIRCANCELAMENTO_PLA' => 1,
-		);
+		];
 
 		if( ! empty($dadosPlanos['id_externo']) ){
 			$params['ID_PLANO_PLA'] = $dadosPlanos['id_externo'];
@@ -221,23 +221,23 @@ class Superlogica
 	{
 		if( ! empty($dadosAssinaturas['id_externo']) ){
 		
-			$params = array(
+			$params = [
 				'ID_PLANOCLIENTE_PLC' => $dadosAssinaturas['id_externo'],
 				'DT_CANCELAMENTO_PLC' => date('m/d/Y', $dadosAssinaturas['data_hora']->getTimestamp()),
-			);
+			];
 
 			$response = $this->put('/assinaturas', $params);
 		}
 
-		$params = array(
-			'PLANOS' => array(
-				array(
+		$params = [
+			'PLANOS' => [
+				[
 					'ID_SACADO_SAC' => $dadosAssinaturas['ComponentAssinantes']['id_externo'],
 					'ID_PLANO_PLA' => $dadosAssinaturas['ComponentPlanos']['id_externo'],
 					'DT_CONTRATO_PLC' => date('m/d/Y', $dadosAssinaturas['data_hora']->getTimestamp()),
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$response = $this->post('/assinaturas', $params);
 
